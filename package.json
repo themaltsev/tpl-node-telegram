@@ -1,0 +1,23 @@
+{
+  "name": "tpl-node-telegram",
+  "version": "0.1.1",
+  "description": "tpl for fast start using telegram bot on node js",
+  "main": "bot.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themaltsev/tpl-node-telegram.git"
+  },
+  "author": "M4Lets",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/themaltsev/tpl-node-telegram/issues"
+  },
+  "homepage": "https://github.com/themaltsev/tpl-node-telegram#readme",
+  "devDependencies": {
+    "promise-mysql": "^5.2.0"
+  }
+}
