@@ -5,7 +5,8 @@
   "main": "bot.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon tatubot --watch",
+    "start": "node tatubot"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,10 @@
   },
   "homepage": "https://github.com/themaltsev/tpl-node-telegram#readme",
   "devDependencies": {
+    "node-telegram-bot-api": "^0.66.0",
     "promise-mysql": "^5.2.0"
+  },
+  "dependencies": {
+    "nodemon": "^3.1.4"
   }
 }

@@ -1,1 +1,4 @@
-Simple template for telegram node bot whit async mysql connections
+Заготовка для написания бота на NODE JS
+
+Уже реализованы нужные функции создание таблицы в бд, функция обновления 
+

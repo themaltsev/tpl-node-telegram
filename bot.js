@@ -1,113 +1,142 @@
+
 import TelegramBot from 'node-telegram-bot-api';
-import { conn, generateOTP, botToken } from './config.js'
-const hashPass = (pass) => bcrypt.hashSync(pass, 3)
+import { conn, botToken, admin_id } from './config.js'
+import { getChatID, capitalizeFirstLetter, userList, shuffleArray, debug, createUser, updateUserData, deleteMessage, getUserData } from "./helpers.js"
 
-// Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(botToken, {polling: true});
+// await getUserData(chat_id, 'chat_id')
+// debug(msg)
+// await updateUserData(chat_id, 'push', 'true')
 
-// messages.
-bot.on('message', async (msg) => {
-    let chat_id = msg.chat.id
-    let user_name = msg.chat?.username.toLowerCase()
-    if (!user_name) user_name = chat_id
-    let text = msg.text
-    bot.deleteMessage(chat_id, msg.message_id)
 
-    if (text === '/start') {
+export const bot = new TelegramBot(botToken, {
+  polling: {
+    interval: 100,
+    autoStart: true
+  }
+});
 
-        let orderTable = `ORDERS_${user_name}`
-        let newPass = generateOTP()
-        let db, users
-        
 
-        try {
-            db = await conn()
-        } catch (error) {
-            console.log(error);
+
+
+// messages
+bot.on("message", async (msg) => {
+  let db, users
+  let chat_id = msg.chat.id
+  let name = msg.chat?.first_name || msg.chat?.last_name || msg.chat?.username.toLowerCase()
+  let text = msg.text.trim()
+
+
+  switch (text) {
+    case "/start":
+
+      // add user to database 
+      // await createUser(msg)
+
+      let hiText = `Привет Мастер, в этом боте ты можешь автомотизировать запись своих клиентов, настроить свой календарь двумя кнопками. Так же найти новых клиентов и всести учет своих доходов`
+      deleteMessage(chat_id, msg.message_id)
+      bot.sendMessage(chat_id, hiText, {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: "Стать мастером",
+                callback_data: "/to_master"
+              },
+            ],
+          ]
         }
-        try {
-            users = await db.query(`SELECT * FROM users`)
-        
-        } catch (error) {
-            console.log(error);
-        }
+      })
+      // bot.sendMessage(chat_id, hiText, {
+      //   reply_markup: {
+      //     inline_keyboard: [
+      //       [
+      //         {
+      //           text: "⚙️ Изменить настройки профиля ",
+      //           callback_data: "/setting"
+      //         },
+      //       ],
+      //       [
+      //         {
+      //           text: "🤓 Начать учить перевод слов",
+      //           callback_data: "/learn"
+      //         },
+      //       ],
+      //       [
+      //         {
+      //           text: `▶️ Начать тест по словам`,
+      //           callback_data: "/test"
+      //         },
+      //       ],
+      //       [
+      //         {
+      //           text: "➕ Начать тест по фразам",
+      //           callback_data: "/frase_menu"
+      //         },
+      //       ],
+      //       [
+      //         {
+      //           text: "Закрыть",
+      //           callback_data: "/exit"
+      //         },
+      //       ],
 
-        let userExist = false
+      //     ]
+      //   }
+      // })
+      break
 
-        users.forEach(user => {
-            if (user_name === user.login) userExist = true
-        })
+    case "/learn":
+       console.log(1);
+      break
 
-        if (!userExist) {
-            let query = `INSERT INTO users(login, password, token, premium, sms_id, company_name, tpl_review, subscription ) VALUES ('${user_name}', '${hashPass(newPass)}', '${chat_id}', '0', '', '', '', '')`
-            await db.query(query)
+    default:
 
-            let createBaseOrder = `CREATE TABLE IF NOT EXISTS ${orderTable} (
-                id INTEGER AUTO_INCREMENT PRIMARY KEY, 
-                phone VARCHAR(255) NOT NULL,
-                name VARCHAR(255) NOT NULL,
-                model VARCHAR(255) NOT NULL,
-                adress VARCHAR(255) NOT NULL,
-                date VARCHAR(255) NOT NULL,
-                time VARCHAR(255) NOT NULL,
-                ready INTEGER DEFAULT(0) NOT NULL,
-                info TEXT NOT NULL
-                );`
-
-            await db.query(createBaseOrder)
-            await bot.sendMessage(chat_id, `Твой логин: ${user_name} как в телеграм`, {
-                reply_markup: {
-                    keyboard: [
-                        ['Обновить пароль'],
-                    ],
-                    resize_keyboard: true
-                }
-            });
-            await bot.sendMessage(chat_id, newPass);
-            
-
-        }
-        else await bot.sendMessage(chat_id, `Пользователь @${user_name} уже существует!`, {
-            reply_markup: {
-                keyboard: [
-                    ['Обновить пароль'],
-                ],
-                resize_keyboard: true
-            }
-        });
-
-        await db.end()
-
-    }
-
-    if (text === 'Обновить пароль') {
-
-        let newPass = generateOTP()
-        let db
-
-        try {
-            db = await conn()
-        } catch (error) {
-            console.log(error);
-        }
-        try {
-            let query = `UPDATE users SET password = '${hashPass(newPass)}' WHERE login = '${user_name}'`
-            await db.query(query)
-            await db.end()
-        
-        } catch (error) {
-            console.log(error);
-        }
-        await bot.sendMessage(chat_id, `Твой логин: ${user_name} как в телеграм`, {
-            reply_markup: {
-                keyboard: [
-                    ['Обновить пароль'],
-                ],
-                resize_keyboard: true
-            }
-        });
-        await bot.sendMessage(chat_id, `${newPass}`)
-    
-    }
+      if (await getUserData(chat_id, 'input_mode') == '1') {
+        console.log('input_mode');
+      }
+      break
+  }
 
 });
+
+
+// callback
+bot.on('callback_query', async query => {
+  // bot.answerCallbackQuery(query.id, { text: '' })
+  // let db, users
+  let msg = query.message
+  let name = msg.chat?.first_name || msg.chat?.last_name || msg.chat?.username.toLowerCase()
+  let chat_id = msg.chat.id
+  let data = query.data
+
+  switch (data) {
+
+    case "/test":
+      // console.log(2);
+    break
+
+    case "/input_time":
+
+      deleteMessage(chat_id, msg.message_id)
+      updateUserData(chat_id, "input_mode", "1")
+      bot.sendMessage(chat_id, `Введи время уведомлений \nв таком формате: 10:00`, {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: "Назад",
+                callback_data: "/push_menu"
+              },
+            ],
+
+          ]
+        }
+      })
+      break
+
+
+
+  
+
+  }
+})
