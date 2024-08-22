@@ -1,6 +1,11 @@
 import { conn, botToken, admin_id } from './config.js'
 import TelegramBot from 'node-telegram-bot-api';
-import {walletFinish, translateWord, debug, updateUserData, deleteMessage, getUserData } from "./helpers.js"
+import { debug, updateUserData, deleteMessage, getUserData } from "./helpers.js"
+
+
+const walletFinish = chat_id => {
+    return "Тут текст уведомления!"
+}
 
 let db, users
 try {
@@ -31,7 +36,7 @@ users.forEach( async (user, index) => {
         console.log(wallet)
     }
     if (wallet == 0) {
-       await walletFinish(user.chat_id)
+      console.log(walletFinish(user.chat_id));
     }
 
     if (index == countUsers) process.exit()

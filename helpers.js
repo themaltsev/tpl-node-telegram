@@ -123,7 +123,7 @@ const updateUserData = async (chat_id, key, value) => {
     }
 
     let query = `UPDATE users SET ${key} = '${value}' WHERE users.chat_id = '${chat_id}';`
-    
+
     try {
         await db.query(query)
     } catch (error) {

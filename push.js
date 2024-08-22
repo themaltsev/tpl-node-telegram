@@ -30,13 +30,13 @@ await db.end()
 users.forEach(user => {
     if (user.push == 'true' && pushTime == user.push_time) {
         // отправляем сообщение
-        bot.sendMessage(user.chat_id, '🤓 Пришло время попрактиковаться!', {
+        bot.sendMessage(user.chat_id, '🤓 Пришло время уведомлений', {
             reply_markup: {
                 inline_keyboard: [
                     [
                         {
-                            text: "Начать",
-                            callback_data: "/test"
+                            text: "Кнопка",
+                            callback_data: "/btm"
                         },
                     ],
                     [

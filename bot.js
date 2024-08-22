@@ -32,61 +32,29 @@ bot.on("message", async (msg) => {
       // add user to database 
       // await createUser(msg)
 
-      let hiText = `Привет Мастер, в этом боте ты можешь автомотизировать запись своих клиентов, настроить свой календарь двумя кнопками. Так же найти новых клиентов и всести учет своих доходов`
       deleteMessage(chat_id, msg.message_id)
-      bot.sendMessage(chat_id, hiText, {
+      bot.sendMessage(chat_id, `Привет WORLD!`, {
         reply_markup: {
           inline_keyboard: [
             [
               {
-                text: "Стать мастером",
-                callback_data: "/to_master"
+                text: "НАСТРОЙКИ",
+                callback_data: "/setting"
+              },
+            ],
+            [
+              {
+                text: "Закрыть",
+                callback_data: "/exit"
               },
             ],
           ]
         }
       })
-      // bot.sendMessage(chat_id, hiText, {
-      //   reply_markup: {
-      //     inline_keyboard: [
-      //       [
-      //         {
-      //           text: "⚙️ Изменить настройки профиля ",
-      //           callback_data: "/setting"
-      //         },
-      //       ],
-      //       [
-      //         {
-      //           text: "🤓 Начать учить перевод слов",
-      //           callback_data: "/learn"
-      //         },
-      //       ],
-      //       [
-      //         {
-      //           text: `▶️ Начать тест по словам`,
-      //           callback_data: "/test"
-      //         },
-      //       ],
-      //       [
-      //         {
-      //           text: "➕ Начать тест по фразам",
-      //           callback_data: "/frase_menu"
-      //         },
-      //       ],
-      //       [
-      //         {
-      //           text: "Закрыть",
-      //           callback_data: "/exit"
-      //         },
-      //       ],
-
-      //     ]
-      //   }
-      // })
       break
 
     case "/learn":
-       console.log(1);
+      console.log(1);
       break
 
     default:
@@ -113,7 +81,7 @@ bot.on('callback_query', async query => {
 
     case "/test":
       // console.log(2);
-    break
+      break
 
     case "/input_time":
 
@@ -136,7 +104,7 @@ bot.on('callback_query', async query => {
 
 
 
-  
+
 
   }
 })
