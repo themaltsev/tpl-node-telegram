@@ -33,6 +33,7 @@ bot.on("message", async (msg) => {
        await createUser(msg)
 
       deleteMessage(chat_id, msg.message_id)
+      
       bot.sendMessage(chat_id, `Привет WORLD!`, {
         reply_markup: {
           inline_keyboard: [
@@ -70,8 +71,8 @@ bot.on("message", async (msg) => {
 
 // callback
 bot.on('callback_query', async query => {
-  // bot.answerCallbackQuery(query.id, { text: '' })
-  // let db, users
+  // bot.answerCallbackQuery(query.id, { text: `Уведомление без подтверждения`}) //  
+  // bot.answerCallbackQuery(query.id, { text: `Уведомление с подтверждением`, show_alert: true }) /
   let msg = query.message
   let name = msg.chat?.first_name || msg.chat?.last_name || msg.chat?.username.toLowerCase()
   let chat_id = msg.chat.id
@@ -79,28 +80,14 @@ bot.on('callback_query', async query => {
 
   switch (data) {
 
-    case "/test":
-      // console.log(2);
-      break
-
-    case "/input_time":
-
+    case "/exit":
       deleteMessage(chat_id, msg.message_id)
-      updateUserData(chat_id, "input_mode", "1")
-      bot.sendMessage(chat_id, `Введи время уведомлений \nв таком формате: 10:00`, {
-        reply_markup: {
-          inline_keyboard: [
-            [
-              {
-                text: "Назад",
-                callback_data: "/push_menu"
-              },
-            ],
-
-          ]
-        }
-      })
       break
+
+    case "/test":
+       console.log('/test');
+      break
+
 
 
 
