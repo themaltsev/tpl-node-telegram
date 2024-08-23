@@ -19,6 +19,15 @@ npm i node-telegram-bot-api promise-mysql
 в bot.on("callback_query") Описываем инлайн команды кнопок с бота
 
 createUser - создание таблицы, нужно передать "msg"
-updateUserData() - передаём chat_id поле которое нужно изменить и 3 параметр значение
+Пример - await createUser(msg)
+
+updateUserData - передаём chat_id поле 2ой параметр которое нужно изменить, 3ий параметр значение 
+Пример - await updateUserData(chat_id, "input_mode", "1")
+
+getChatID - возвращает chat_id - передаём имя пользователя если оно есть "user_name" 
+Пример getChatID(user_name)
+
+deleteMessage - Удаляет сообщение, принимает chat_id и id сообщения 
+Пример - deleteMessage(chat_id, msg.message_id)
 
 Приятного использования
