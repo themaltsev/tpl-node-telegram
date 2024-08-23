@@ -29,8 +29,8 @@ bot.on("message", async (msg) => {
   switch (text) {
     case "/start":
 
-      // add user to database 
-      // await createUser(msg)
+      // add user to database first create DataBase or comment next string
+       await createUser(msg)
 
       deleteMessage(chat_id, msg.message_id)
       bot.sendMessage(chat_id, `Привет WORLD!`, {
