@@ -3,10 +3,6 @@ import TelegramBot from 'node-telegram-bot-api';
 import { conn, botToken, admin_id } from './config.js'
 import { getChatID, capitalizeFirstLetter, userList, shuffleArray, debug, createUser, updateUserData, deleteMessage, getUserData } from "./helpers.js"
 
-// await getUserData(chat_id, 'chat_id')
-// debug(msg)
-// await updateUserData(chat_id, 'push', 'true')
-
 
 export const bot = new TelegramBot(botToken, {
   polling: {
@@ -14,8 +10,6 @@ export const bot = new TelegramBot(botToken, {
     autoStart: true
   }
 });
-
-
 
 
 // messages
@@ -54,14 +48,13 @@ bot.on("message", async (msg) => {
       })
       break
 
-    case "/learn":
-      console.log(1);
-      break
-
     default:
-
       if (await getUserData(chat_id, 'input_mode') == '1') {
         console.log('input_mode');
+        // Тут код который исполняется в режиме инпут
+      }
+      else {
+         // Тут код который исполняется по умолчанию 
       }
       break
   }
